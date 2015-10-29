@@ -1,0 +1,74 @@
+block config
+  - var _rootPath = '';
+  - var _subTitle = '';
+
+- if (_subTitle != '') {
+- _subTitle += ' | ';
+- }
+
+block meta
+  - var _title       = 'title';
+  - var _description = 'description';
+  - var _keywords    = 'key';
+  - var _url         = '';
+  - var _copyrights  = '';
+
+block revision
+  - var _rev = '?rev=' + new Date(2015, 10-1, 29).getTime();
+
+- var _include = false;
+
+doctype
+html(lang='ja')
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='format-detection', content='telephone=no')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    
+    - if(_include){
+      title #{_subTitle}<!--#include virtual="#{_rootPath}assets/include/title.inc"-->
+      meta(name="Keywords", content!='<!--#include virtual=\u0027#{_rootPath}assets/include/keywords.inc\u0027-->')
+      meta(name="Description", content!='<!--#include virtual=\u0027#{_rootPath}assets/include/description.inc\u0027-->')
+    - } else {
+      title #{_title}
+      meta(name='keywords', content='#{_keywords}')
+      meta(name='description', content='#{_description}')
+    - }
+    
+    meta(name='copyright', content='#{_copyrights}')
+    meta(property='og:locale', content='ja_JP')
+    meta(property='og:type', content='website')
+
+    - if(_include){
+      meta(property='og:url', content!='<!--#include virtual=\u0027#{_rootPath}assets/include/url.inc\u0027-->')
+      meta(property='og:title', content!='<!--#include virtual=\u0027#{_rootPath}assets/include/title.inc\u0027-->')
+      meta(property='og:description', content!='<!--#include virtual=\u0027#{_rootPath}assets/include/description.inc\u0027-->')
+      meta(property='og:image', content!='<!--#include virtual=\u0027#{_rootPath}assets/include/url.inc\u0027-->/sns.png')
+    - } else {
+      meta(property='og:url', content='#{_url}')
+      meta(property='og:title', content='#{_title}')
+      meta(property='og:description', content='#{_description}')
+      meta(property='og:image', content='#{_url}sns.png')
+    - }
+    
+    != '\n    <!--[if lt IE 9]>'
+      script(src='//css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js')
+      script(src='//html5shiv.googlecode.com/svn/trunk/html5.js')
+    != '\n    <![endif]-->'
+    
+    block styles
+      link(href='//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css', rel='stylesheet')
+      link(rel='stylesheet', href='#{_rootPath}assets/css/' + _rev)
+  body
+    .container
+      block body
+
+    block scripts
+      script(src='//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js')
+      script(src='//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js')
+      script(src='#{_rootPath}assets/js/libs.js')
+    
+    - if(_include){
+      <!--#include virtual="#{_rootPath}assets/include/ga.inc"-->
+    - }

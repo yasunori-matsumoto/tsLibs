@@ -1,0 +1,33 @@
+{
+  "name": "-",
+  "version": "0.0.0",
+  "description": "",
+  "authors": [
+    "-"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "velocity": "~1.2.2",
+    "fastclick": "~1.0.6",
+    "lodash": "~3.10.1",
+    "pixi.js": "pixi#~3.0.7"
+  },
+  "devDependencies": {
+    "lodash": "~3.10.1",
+    "pixi.js": "pixi#~3.0.7",
+    "jScrollPane": "jscrollpane#~2.0.22"
+  },
+  "homepage": "",
+  "overrides": {
+    "modernizr": {
+      "main": "modernizr.js"
+    }
+  }
+}
