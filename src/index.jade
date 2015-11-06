@@ -1,9 +1,11 @@
 extends _jade/base.jade
 
 block append styles
+  link(rel="stylesheet", href="#{_rootPath}assets/css/caters.develop.main.min.css" + _rev)
 
 block append scripts
-  
+  script(src="#{_rootPath}assets/js/caters.develop.min.js" + _rev)
 
 block body
-  .pixi_canvas#pixi_canvas
+  #bg_canvas
+  p#testObj ■

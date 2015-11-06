@@ -2,8 +2,8 @@
  *	gulp_settings by Yasu MatsuMoto
  * 	require gulp -g, typescript -g, stylus -g
  ===================================================================   */
-var IS_MIN      = true;
-var IS_HARDCASE = true;
+var IS_MIN      = false;
+var IS_HARDCASE = false;
 var _isPC       = true;
 
 var _src  = _isPC ? 'src/' : 'src/sp/';
@@ -208,6 +208,7 @@ gulp.task('typescript', function(){
     .pipe(typescript(typescriptProject))
     .js
     .pipe(gulpif(IS_MIN, uglify()))
+    .pipe(gulpif(!IS_MIN, replace(/  /g, ' ')))
     .pipe(rename({suffix:'.min'}))
     .pipe(gulp.dest(dir.dest))
     .pipe(browserSync.reload({stream: true}));

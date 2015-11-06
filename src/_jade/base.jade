@@ -53,20 +53,20 @@ html(lang='ja')
     - }
     
     != '\n    <!--[if lt IE 9]>'
-      script(src='//css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js')
+      //- script(src='//css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js')
       script(src='//html5shiv.googlecode.com/svn/trunk/html5.js')
     != '\n    <![endif]-->'
     
     block styles
       link(href='//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css', rel='stylesheet')
-      link(rel='stylesheet', href='#{_rootPath}assets/css/' + _rev)
+      link(rel='stylesheet', href='#{_rootPath}assets/css/caters.develop.main.min.css' + _rev)
   body
     .container
       block body
 
     block scripts
       script(src='//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js')
-      script(src='//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js')
+      //- script(src='//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js')
       script(src='#{_rootPath}assets/js/libs.js')
     
     - if(_include){
