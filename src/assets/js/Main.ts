@@ -1,6 +1,7 @@
 import EventDispatcher = require('ex/events/EventDispatcher');
 import Event = require('ex/events/Event');
 import Loader = require('ex/network/Loader');
+import DisplayObject = require('ex/display/DisplayObject');
 import _d = require('ex/core/Dom');
 
 var log = (_state:any):void => {

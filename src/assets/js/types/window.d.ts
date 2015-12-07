@@ -20,8 +20,10 @@ interface Window {
   apiLoaded:boolean;
   log(_state:any):any;
   FastClick():any;
+  Velocity:any;
 }
 
 interface Document {
   attachEvent(event: string, listener: EventListener): boolean;
+  Velocity:any;
 }

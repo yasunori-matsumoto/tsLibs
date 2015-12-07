@@ -1,6 +1,9 @@
 import EventDispatcher = require('ex/events/EventDispatcher');
+import Velocity = require('')
 
 class DisplayObject extends EventDispatcher {
+  protected _node:any;
+  protected _style:any;
   protected _visible   :boolean = true;
   protected _buttonMode:boolean = true;
   protected _scaleX    :number = 1;
@@ -21,14 +24,13 @@ class DisplayObject extends EventDispatcher {
 
   
   constructor(public _query:string) {
-    super(_query);
+    super();
     this._node = document.querySelectorAll(_query);
     this._style = this._node.style;
     this._width = this._node.offsetWidth;
     this._height = this._node.offsetHeight;
     
     this._absolute = getComputedStyle(this._node)['position'] === 'absolute';
-    this._positionState = this._node
   }
   
   velocity = (_param:any, _options:any):void => {
@@ -89,13 +91,23 @@ class DisplayObject extends EventDispatcher {
   }
   
   //- . . . . . . . . . . . . . . .  . . . abs <
-  get poa():boolean = {
+  get poa():boolean {
     return this._absolute;
   }
   
-  set poa(_isAbsolute:boolean) {
-    this._absolute = _isAbsolute;
-    this._absolute ? this.style.position = 'absolute' : this.style.position = 'relative';
+  set poa(_poa:boolean) {
+    this._absolute = true;
+    this._absolute ? this._style.position = 'absolute' : this._style.position = 'relative';
+  }
+  
+  //- . . . . . . . . . . . . . . .  . . .  <
+  get por() {
+    return !this._absolute;
+  }
+  
+  set por() {
+    this._absolute = false;
+    this._absolute ? this._style.position = 'absolute' : this._style.position = 'relative';
   }
   
   //- . . . . . . . . . . . . . . .  . . . x <

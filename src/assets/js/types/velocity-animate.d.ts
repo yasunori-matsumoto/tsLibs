@@ -15,6 +15,10 @@ interface JQuery {
 	velocity(properties: jquery.velocity.Properties, complete?: jquery.velocity.ElementCallback): JQuery;
 }
 
+interface Window {
+	Velocity():any;
+}
+
 interface JQueryStatic {
 	Velocity: jquery.velocity.VelocityStatic;
 }
@@ -78,6 +82,26 @@ declare module jquery.velocity {
 	}
 
 	interface VelocityStatic {
+		Sequences: any;
+		animate(options: {elements: NodeListOf<HTMLElement>; properties: Properties; options: Options}): any;
+		animate(elements: HTMLElement|NodeListOf<HTMLElement>, properties: Properties, options: Options): any;
+		RegisterEffect(name: string, options: RegisterEffectOptions): VelocityStatic;
+		RunSequence(sequence: SequenceCall[]): VelocityStatic;
+
+		/**
+		 * Get a hook value. Hooks are the subvalues of multi-value CSS properties.
+		 * It features the same API as $.css().
+		 */
+		hook(element: HTMLElement|JQuery, cssKey: string): string;
+
+		/**
+		 * Set a hook value. Hooks are the subvalues of multi-value CSS properties.
+		 * It features the same API as $.css().
+		 */
+		hook(element: HTMLElement|JQuery, cssKey: string, cssValue: string): void;
+	}
+
+	interface Velocity {
 		Sequences: any;
 		animate(options: {elements: NodeListOf<HTMLElement>; properties: Properties; options: Options}): any;
 		animate(elements: HTMLElement|NodeListOf<HTMLElement>, properties: Properties, options: Options): any;
