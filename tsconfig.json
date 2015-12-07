@@ -1,0 +1,18 @@
+{
+  "compilerOptions" : {
+    "target": "es5",
+    "module" : "commonjs",
+    "removeComments" : true,
+    "noImplicitAny" : false,
+    "noEmitOnError" : false
+  },
+  "files" : [
+    "src/assets/js/types/window.d.ts",
+    "src/assets/js/types/jquery.d.ts",
+    "src/assets/js/types/fastclick.d.ts",
+    "src/assets/js/types/velocity-animate.d.ts",
+    "src/assets/js/types/google.maps.d.ts",
+    "src/assets/js/types/three.canvasrenderer.d.ts",
+    "src/assets/js/types/three.d.ts"
+  ]
+}

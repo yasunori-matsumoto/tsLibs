@@ -19,80 +19,79 @@ body
   line-height 130%
   font-family "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"ＭＳ Ｐゴシック","MS PGothic",sans-serif
   color col_text
+  background-color #eee
 
-#testObj
-  color col_white
+
+cube_length = 180;
+cube_half = cube_length/2;
+
+.cube_rect
+  perspective 1000px
+  transform-style preserve-3d
+  perspective-origin: 50% 50%;
+  transform-style preserve-3d
   position absolute
-  left 0
-  top 0
-  font-size 30px
+  left 50%
+  top 50%
+  // animation:containerRotate 30s infinite linear;
 
-.calender_view
-  clearfix()
-
-.detail_view
-  margin-top 40px
-
-
-.calendar_node
-  margin-top 40px
-  width 350px
-  margin-right 40px
-  float left
-  
-h3
-  display block
-  font-weight bold
-  font-size 18px
-  text-align center
-
-h4
-  display block
-  font-weight bold
-  text-align center
-  font-size 14px
-  margin-top 10px
-
-.calendar
-  clearfix()
-  width 350px
-  margin-top 13px
-  vertical-align middle
+  .cube
+    transform-style preserve-3d
+    position relative
+    animation:rotateCube 5s infinite linear;
+    position absolute
+    left 0
+    top 0
     
-  li
-    float left
-    width 50px
-    height 50px
-    box-sizing border-box
-    text-align center
-    vertical-align middle
-    background-color #eee
-    border-left 1px solid #fff
-    border-bottom 1px solid #fff
+    .rect
+      transform-style preserve-3d
+      width unit(cube_length, 'px')
+      height unit(cube_length, 'px')
+      
     
-    &.caption
-      font-weight bold
-      height 20px
-    
-    &.Sat
-      background-color #9dedf4
-    &.Sun
-      background-color #e874c9
-    
-    &.has_data
-      border 2px solid col_red
-      cursor pointer
-      color col_red
-      font-weight bold
-      font-size 14px
-      line-height 1em
-    
-.detail_list
-  width 500px
-  bc()
-  
-  li
-    padding 10px
-    background-color #efefef
-    font-weight bold
-    margin-top 50px
+      position absolute
+      left unit(-1*cube_half, 'px')
+      top unit(-1*cube_half, 'px')
+      
+      &.top
+        transform rotate3d(1, 0, 0, 90deg) translate3d(0px, 0px, unit(cube_half, 'px'))
+      &.side1
+        transform rotate3d(0, 1, 0, -90deg) translate3d(0px, 0px, unit(cube_half, 'px'))
+      &.side2
+        transform rotate3d(0, 1, 0, -180deg) translate3d(0px, 0px, unit(cube_half, 'px'))
+      &.side3
+        transform rotate3d(0, 1, 0, 90deg) translate3d(0px, 0px, unit(cube_half, 'px'))
+      &.side4
+        transform rotate3d(0, 1, 0, 180deg) translate3d(0px, 0px, unit(-1*cube_half, 'px'))
+      &.bottom
+        transform rotate3d(1, 0, 0, -90deg) translate3d(0px, 0px, unit(cube_half, 'px'))
+
+      
+      img
+        width 100%
+        height 100%
+      &:after
+        content ''
+        display block
+        position absolute
+        left 0
+        top 0
+        width 100%
+        height 100%
+        box-shadow: 0px 0px 10px rgba(255,255,255,1) inset, 0px 0px 50px rgba(255,255,255,0.5) inset;
+        
+    &.a
+      left unit(-2*cube_length, 'px');
+    &.c
+      left unit(2*cube_length, 'px');
+
+
+@keyframes rotateCube {
+  from   { transform: rotateY(0deg) rotateX(0deg) }
+  to { transform: rotateY(360deg) rotateX(360deg) }
+}
+
+@keyframes containerRotate {
+  from   { transform: rotateZ(0deg); }
+  to { transform: rotateZ(360deg); }
+}
