@@ -1,16 +1,32 @@
 import Event = require('ex/events/Event');
 
 class EventDispatcher {
-  private _listeners:any = {};
-  addEventListener(types:string, listener:(e:Event) => any):void {
+  public _listeners:any = {};
+  
+  constructor(public _target:any = null) {
+  }
+  
+  public addEventListener = (types:string, listener:any, useCapture:boolean = false):void => {
+    if (this._target) {
+      this._target.addEventListener(types, listener, useCapture);
+      return;
+    }
+    
     var typeList:string[] = types.split(/\s+/);
     var i:number = 0;
     var l:number = typeList.length;
+    
     for (; i < l; i++) {
-        this._listeners[typeList[i]] = listener;
+      this._listeners[typeList[i]] = listener;
     }
   }
-  removeEventListener(types:string, listener?:Function):void {
+  
+  public removeEventListener = (types:string, listener?:Function):void => {
+    if (this._target) {
+      this._target.removeEventListener(types, listener);
+      return;
+    }
+    
     var typeList:string[] = types.split(/\s+/);
     var i:number = 0;
     var l:number = typeList.length;
@@ -22,7 +38,18 @@ class EventDispatcher {
         }
     }
   }
-  dispatchEvent(type:string, data:Object = {}, context:any = this):boolean {
+  public dispatchEvent = (type:string, data:Object = {}, context:any = this):boolean => {
+    if (this._target) {
+      if (window.CustomEvent) {
+        var event = new CustomEvent(type, data);
+      } else {
+        var event = document.createEvent('CustomEvent');
+        event.initCustomEvent(type, true, true, data);
+      }
+      this._target.dispatchEvent(event);
+      return;
+    }
+    
     var listener:Function;
     if (listener = this._listeners[type]) {
       var e:Event = new Event(type);
@@ -32,7 +59,7 @@ class EventDispatcher {
     return true;
   }
   
-  clearEventListener():void {
+  public clearEventListener = ():void => {
     this._listeners = {};
   }
 }

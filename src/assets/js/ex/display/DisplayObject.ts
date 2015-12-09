@@ -1,8 +1,6 @@
 import EventDispatcher = require('ex/events/EventDispatcher');
-import Velocity = require('')
 
 class DisplayObject extends EventDispatcher {
-  protected _node:any;
   protected _style:any;
   protected _visible   :boolean = true;
   protected _buttonMode:boolean = true;
@@ -18,19 +16,13 @@ class DisplayObject extends EventDispatcher {
   protected _x         :number = 0;
   protected _y         :number = 0;
   protected _zIndex    :number = 0;
+  protected _position : string = 'relative';
   
-  
-  protected _absolute : boolean = false;
-
-  
-  constructor(public _query:string) {
-    super();
-    this._node = document.querySelectorAll(_query);
+  constructor(public _node:any) {
+    super(_node);
     this._style = this._node.style;
     this._width = this._node.offsetWidth;
     this._height = this._node.offsetHeight;
-    
-    this._absolute = getComputedStyle(this._node)['position'] === 'absolute';
   }
   
   velocity = (_param:any, _options:any):void => {
@@ -54,7 +46,7 @@ class DisplayObject extends EventDispatcher {
   dispose = ():void => {
     Velocity(this._node, 'stop');
     this._node.removeAttribute('style');
-    this._node.clearEventListener();
+    this.clearEventListener();
     
     this._node       = void 0;
     this._style      = void 0;
@@ -91,23 +83,9 @@ class DisplayObject extends EventDispatcher {
   }
   
   //- . . . . . . . . . . . . . . .  . . . abs <
-  get poa():boolean {
-    return this._absolute;
-  }
-  
-  set poa(_poa:boolean) {
-    this._absolute = true;
-    this._absolute ? this._style.position = 'absolute' : this._style.position = 'relative';
-  }
-  
-  //- . . . . . . . . . . . . . . .  . . .  <
-  get por() {
-    return !this._absolute;
-  }
-  
-  set por() {
-    this._absolute = false;
-    this._absolute ? this._style.position = 'absolute' : this._style.position = 'relative';
+  set position(_position:string) {
+    this._position = _position;
+    this._style.position = _position;
   }
   
   //- . . . . . . . . . . . . . . .  . . . x <

@@ -40,6 +40,10 @@ var imagemin       = require('gulp-imagemin');
 var spritesmith    = require('gulp.spritesmith');
 var pngquant       = require('imagemin-pngquant');
 
+//- . . . . . . . . . . . . . . .  . . . font <
+var iconfont = require('gulp-iconfont');
+var consolidate = require('gulp-consolidate');
+
 //- ----------------------------------------------------------- makeLibs <
 gulp.task('bower', function() {
   gulp.src(mainBowerFiles({debugging : true, checkExistence : true}))
@@ -169,6 +173,29 @@ gulp.task('webpack' ,function(){
   .pipe(gulp.dest(config.dir.dest + 'assets/js/'))
   .pipe(browserSync.reload({stream: true}));
 });
+
+gulp.task('iconfont', function() {
+  gulp.src(config.fonts.src)
+    .pipe(iconfont({
+      fontName: config.fonts.fontName,
+      appendUnicode : true,
+      normalize: true,
+      timestamp: Math.round(Date.now() / 1000),
+      formats: ['ttf', 'eot', 'woff', 'svg', 'woff2']
+    }))
+    .on('glyphs', function(glyphs, options) {
+      
+      gulp.src(config.fonts.template)
+      .pipe(consolidate('lodash', {
+        glyphs: glyphs,
+        fontName: config.fonts.fontName,
+        fontPath: '../fonts/',
+        className: config.fonts.fontName
+      }))
+      .pipe( gulp.dest( config.dir.src + 'assets/css/fonts/' ) );
+    })
+  .pipe( gulp.dest( config.fonts.dest) );
+});
 //- ----------------------------------------------------------- watch <
 gulp.task('watch', ['copyStaticFiles'], function () {
     browserSync({
@@ -185,4 +212,5 @@ gulp.task('watch', ['copyStaticFiles'], function () {
     gulp.watch(config.dir.src + '**/*.jade', ['jade']);
     gulp.watch(config.dir.src + '**/*.styl', ['stylus']);
     gulp.watch(config.dir.src + '**/*.ts', ['webpack']);
+    gulp.watch(config.dir.src + 'assets/fonts/_src/*.svg', ['iconfont']);
 });

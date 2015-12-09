@@ -1,6 +1,7 @@
 @charset "utf-8"
 @import "_config"
 @import "nib"
+@import "fonts/_icons.styl"
 
 global-reset()
 
@@ -21,6 +22,31 @@ body
   color col_text
   background-color #eee
 
+.big
+  font-size 20rem
+  color col_red
+  
+.super_big
+  font-size 30rem
+
+.red
+  color col_red
+
+.rotate
+  cursor pointer
+  &:before
+    transition : all 0.3s ease;
+    // animation:rotation 2s infinite linear;
+
+  &:hover
+    &:before
+      color #0000ff
+      transform scale(2);
+    
+@keyframes rotation {
+  from   { transform: rotateZ(0deg); }
+  to { transform: rotateZ(360deg); }
+}
 
 cube_length = 180;
 cube_half = cube_length/2;
@@ -65,8 +91,6 @@ cube_half = cube_length/2;
         transform rotate3d(0, 1, 0, 180deg) translate3d(0px, 0px, unit(-1*cube_half, 'px'))
       &.bottom
         transform rotate3d(1, 0, 0, -90deg) translate3d(0px, 0px, unit(cube_half, 'px'))
-
-      
       img
         width 100%
         height 100%

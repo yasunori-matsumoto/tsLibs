@@ -11,6 +11,7 @@ var dest = IS_PC ? './_git/public_html/' : './_git/public_html/sp/';
 var path = require("path");
 var current = process.cwd();
 var webpack = require('webpack');
+var BowerWebpackPlugin = require("bower-webpack-plugin");
 
 module.exports = {
   dir : {
@@ -57,12 +58,14 @@ module.exports = {
     externals : {
     },
     resolve: {
-      root: path.resolve(__dirname, 'src/assets/js'),
+      root: [path.resolve(__dirname, 'src/assets/js')],
+      // root: [path.join(__dirname, "bower_components")],
       extensions: ['', '.js', '.ts']
     },
     module : {
       loaders: [
         {test: /\.ts$/, loader:'ts-loader'}
+        // {test: /\.jade$/, loader: "jade-loader"}
       ]
     },
     plugins : [
@@ -76,7 +79,21 @@ module.exports = {
         sourceMap:false,
         beautify : true,
         mangle : false
+      }),
+      new BowerWebpackPlugin({
+        modulesDirectories: ['bower_components'],
+        manifestFiles:      "bower.json",
+        includes:           /.*/,
+        excludes:           [],
+        searchResolveModulesDirectories: true
       })
     ]
+  },
+  fonts : {
+    src: [src + 'assets/fonts/_src/*.svg'],
+    template : '_icons.styl',
+    dest: dest + 'assets/fonts/',
+    fontName : 'font',
+    template_dest : src + 'assets/css/fonts/'
   }
 }
