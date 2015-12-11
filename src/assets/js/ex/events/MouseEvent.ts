@@ -1,9 +1,9 @@
-module MouseEvent {
-  export var CLICK     :string = "click";
-  export var MOUSE_DOWN:string = ("ontouchstart" in window) ? "touchstart" : "mousedown";
-  export var MOUSE_UP  :string = ("ontouchend" in window) ? "touchend" : "mouseup";
-  export var MOUSE_MOVE:string = ("ontouchmove" in window) ? "touchmove" : "mousemove";
-  export var MOUSE_OVER:string = "mouseenter";
-  export var MOUSE_OUT :string = "mouseleave";
+class MouseEvent {
+  public static get CLICK()     :string {return "click"};
+  public static get MOUSE_DOWN():string {return ("ontouchstart" in window) ? "touchstart" : "mousedown"};
+  public static get MOUSE_UP()  :string {return ("ontouchend" in window) ? "touchend" : "mouseup"};
+  public static get MOUSE_MOVE():string {return ("ontouchmove" in window) ? "touchmove" : "mousemove"};
+  public static get MOUSE_OVER():string {return 'mouseenter'};
+  public static get MOUSE_OUT() :string {return 'mouseleave'};
 }
 export = MouseEvent;

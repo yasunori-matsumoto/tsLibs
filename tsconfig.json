@@ -14,6 +14,7 @@
     "src/assets/js/types/google.maps.d.ts",
     "src/assets/js/types/three.canvasrenderer.d.ts",
     "src/assets/js/types/three.d.ts",
-    "src/assets/js/types/Velocity.d.ts"
+    "src/assets/js/types/Velocity.d.ts",
+    "src/assets/js/types/pixi.d.ts"
   ]
 }

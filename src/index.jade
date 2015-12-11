@@ -4,21 +4,24 @@ block append styles
   link(rel="stylesheet", href="#{_rootPath}assets/css/caters.develop.main.css" + _rev)
 
 block append scripts
+  script(src="#{_rootPath}assets/js/CanvasRenderer.js" + _rev)
+  script(src="#{_rootPath}assets/js/Projector.js" + _rev)
   script(src="#{_rootPath}assets/js/top.example.js" + _rev)
 
 block body
-  span.font.font_test4
-  span.font.font_test4.font-2x
-  span.font.font_test4.font-3x
-  span.font.font_test4.font-4x
-  span.font.font_test4.font-5x
-  span.font.font_test4.big.red
-  span.font.font_test4.font-5x.rotate
-    
-  .div
-    - for(i=0; i<1000; i++) {
-      span.font.font_test4.font-3x
-    - }
+  #test_canvas
+  //- span.font.font_test4
+  //- span.font.font_test4.font-2x
+  //- span.font.font_test4.font-3x
+  //- span.font.font_test4.font-4x
+  //- span.font.font_test4.font-5x
+  //- span.font.font_test4.big.red
+  //- span.font.font_test4.font-5x.rotate
+  //-   
+  //- .div
+  //-   - for(i=0; i<1000; i++) {
+  //-     span.font.font_test4.font-3x
+  //-   - }
   //- span.font.font_test4.super_big.red
   //- .cube_rect
   //-   .cube.a

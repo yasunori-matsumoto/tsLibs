@@ -14,15 +14,18 @@
     "tests"
   ],
   "dependencies": {
+    "jquery": "*",
     "velocity": "~1.2.2",
     "fastclick": "~1.0.6",
-    "lodash": "~3.10.1"
-    
+    "lodash": "~3.10.1",
+    "three.js": "threejs#*",
+    "pixi.js": "pixi#~3.0.7"
   },
   "devDependencies": {
     "lodash": "~3.10.1",
     "pixi.js": "pixi#~3.0.7",
-    "three.js": "threejs#*"
+    "three.js": "threejs#*",
+    "jquery": "*"
   },
   "homepage": "",
   "overrides": {

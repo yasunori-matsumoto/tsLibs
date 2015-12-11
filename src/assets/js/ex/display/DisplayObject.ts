@@ -47,7 +47,6 @@ class DisplayObject extends EventDispatcher {
     Velocity(this._node, 'stop');
     this._node.removeAttribute('style');
     this.clearEventListener();
-    
     this._node       = void 0;
     this._style      = void 0;
     this._visible    = void 0;

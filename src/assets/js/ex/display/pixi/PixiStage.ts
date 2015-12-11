@@ -1,3 +1,5 @@
+import Event = require('ex/events/Event');
+
 class PixiStage {
   private _id:string = 'canvas';
   protected  _stage:any;
@@ -19,8 +21,8 @@ class PixiStage {
     if (ua.indexOf('firefox') != -1) {
       this._renderer = new PIXI.CanvasRenderer(640, 480);
     } else {
-      this._renderer = new PIXI.CanvasRenderer(640, 480);
-      // this._renderer = PIXI.autoDetectRenderer(640, 480);
+      // this._renderer = new PIXI.CanvasRenderer(640, 480);
+      this._renderer = PIXI.autoDetectRenderer(640, 480);
     }
     
     this._renderer.backgroundColor = this._backgroundColor;
@@ -32,7 +34,7 @@ class PixiStage {
     this._renderer.render(this._stage);
     this.onResizeHD();
     this._renderingTimer = window.requestAnimFrame(this.rendering);
-    $(window).bind(Events.RESIZE, this.onResizeHD);
+    $(window).bind(Event.RESIZE, this.onResizeHD);
   }
   
   rendering = ():void => {
@@ -43,7 +45,7 @@ class PixiStage {
   onResizeHD = ():void => {
     var _parent = $('#' + this._id);
     
-    this._renderer.resize(_parent.width(), _parent.outerHeight());
+    this._renderer.resize(window.innerWidth , window.innerHeight);
   }
 }
 export = PixiStage;

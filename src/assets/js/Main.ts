@@ -1,13 +1,12 @@
-import EventDispatcher = require('ex/events/EventDispatcher');
-import Event = require('ex/events/Event');
+// import EventDispatcher = require('ex/events/EventDispatcher');
+// import Event = require('ex/events/Event');
 import MouseEvent = require('ex/events/MouseEvent');
 import Loader = require('ex/network/Loader');
 import DisplayObject = require('ex/display/DisplayObject');
-// import _d = require('ex/core/Dom');
+import DevelopMain = require('caters/develop/Main');
+import PixiDevelop = require('caters/develop/Pixi');
 
-import _ = require('lodash');
-import Velocity = require('velocity.js');
-
+// import Jade = require("jade!./jade/test.jade");
 
 window.requestAnimFrame = (():any => {
   return window.requestAnimationFrame ||
@@ -32,7 +31,6 @@ window.cancelAnimFrame = (():any => {
   window.oCancelAnimationFrame ||
   window.oCancelRequestAnimationFrame ||
   function(id) { window.clearTimeout(id); };
-  
 })();
 
 function ready(fn) {
@@ -51,9 +49,9 @@ function ready(fn) {
 ready(function() {
   FastClick.attach(document.body);
   new Sample();
+  // new DevelopMain();
+  new PixiDevelop();
 });
-
-
 
 class Sample extends EventDispatcher {
   constructor() {

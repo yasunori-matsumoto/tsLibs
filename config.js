@@ -60,17 +60,23 @@ module.exports = {
     resolve: {
       root: [path.resolve(__dirname, 'src/assets/js')],
       // root: [path.join(__dirname, "bower_components")],
-      extensions: ['', '.js', '.ts']
+      extensions: ['', '.js', '.ts'],
+      moduleDirectories : ['bower_components']
     },
     module : {
       loaders: [
-        {test: /\.ts$/, loader:'ts-loader'}
-        // {test: /\.jade$/, loader: "jade-loader"}
+        {test: /\.ts$/, loader:'ts-loader'},
+        {test: /\.jade$/, loader: "jade-loader"}
       ]
     },
     plugins : [
       new webpack.ProvidePlugin({
+        Event : 'ex/events/Event',
+        EventDispatcher : 'ex/events/EventDispatcher',
+        MouseEvent : 'ex/events/MouseEvent'
       }),
+      // new webpack.ProvidePlugin({
+      // }),
       // new webpack.BannerPlugin('test', {entry:true}),
       new webpack.optimize.UglifyJsPlugin({
         compress: {
@@ -81,11 +87,11 @@ module.exports = {
         mangle : false
       }),
       new BowerWebpackPlugin({
-        modulesDirectories: ['bower_components'],
+        // modulesDirectories: ['bower_components'],
         manifestFiles:      "bower.json",
-        includes:           /.*/,
-        excludes:           [],
-        searchResolveModulesDirectories: true
+        // includes:           /.*/,
+        // excludes:           [],
+        // searchResolveModulesDirectories: true
       })
     ]
   },

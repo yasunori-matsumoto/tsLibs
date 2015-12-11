@@ -3905,7 +3905,7 @@ declare module THREE {
         x: number;
         y: number;
         z: number;
-
+        spd : number;
         /**
          * Sets value of this vector.
          */
