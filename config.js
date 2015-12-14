@@ -1,5 +1,6 @@
 var nib            = require('nib');
 
+var projectName = 'reserch';
 var IS_MIN      = false;
 var IS_HARDCASE = false;
 var IS_PC       = true;
@@ -46,11 +47,11 @@ module.exports = {
   },
   webpack: {
     entry: {
-      top : src + 'assets/js/Main.ts'
+      index : src + 'assets/js/Main.ts'
     },
     output: {
-      path : __dirname,
-      filename: '[name].example.js',
+      path : dest + 'assets/js/',
+      filename: projectName + '.[name].js',
       sourcePrefix : '',
       devtoolLineToLine : 'disabled',
       pathinfo : false,
@@ -59,24 +60,22 @@ module.exports = {
     },
     resolve: {
       root: [path.resolve(__dirname, 'src/assets/js')],
-      // root: [path.join(__dirname, "bower_components")],
       extensions: ['', '.js', '.ts'],
       moduleDirectories : ['bower_components']
     },
     module : {
       loaders: [
-        {test: /\.ts$/, loader:'ts-loader'},
-        {test: /\.jade$/, loader: "jade-loader"}
+        {test: /\.ts$/, loader:'ts-loader'}
       ]
     },
     plugins : [
       new webpack.ProvidePlugin({
         Event : 'ex/events/Event',
         EventDispatcher : 'ex/events/EventDispatcher',
-        MouseEvent : 'ex/events/MouseEvent'
+        MouseEvent : 'ex/events/MouseEvent',
+        Ease : 'ex/easing/Ease',
+        _d : 'ex/core/Dom'
       }),
-      // new webpack.ProvidePlugin({
-      // }),
       // new webpack.BannerPlugin('test', {entry:true}),
       new webpack.optimize.UglifyJsPlugin({
         compress: {
@@ -85,15 +84,8 @@ module.exports = {
         sourceMap:false,
         beautify : true,
         mangle : false
-      }),
-      new BowerWebpackPlugin({
-        // modulesDirectories: ['bower_components'],
-        manifestFiles:      "bower.json",
-        // includes:           /.*/,
-        // excludes:           [],
-        // searchResolveModulesDirectories: true
       })
-    ]
+    ],
   },
   fonts : {
     src: [src + 'assets/fonts/_src/*.svg'],

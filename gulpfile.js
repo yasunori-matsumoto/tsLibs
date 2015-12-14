@@ -20,11 +20,12 @@ var cache          = require('gulp-cached');
 
 //- . . . . . . . . . . . . . . . . . . js <
 
-var strip    = require('gulp-strip-comments');
-var webpack    = require('webpack-stream');
-var typescript = require('gulp-typescript');
-var uglify     = require('gulp-uglify');
-var prettify = require('gulp-jsbeautifier');
+// var strip    = require('gulp-strip-comments');
+// var webpack    = require('webpack-stream');
+// var typescript = require('gulp-typescript');
+// var uglify     = require('gulp-uglify');
+// var prettify = require('gulp-jsbeautifier');
+var webpack = require('webpack');
 
 //- . . . . . . . . . . . . . . . . . . css <
 var stylus         = require('gulp-stylus');
@@ -159,20 +160,37 @@ gulp.task('makeSprite',  function () {
   spriteData.css.pipe(gulp.dest(_scssOutput));
 });
 
-gulp.task('webpack' ,function(){
-  gulp.src([config.dir.src + '_webpack/**/*.js'])
-  .pipe(plumber())
-  // .pipe(cache('webpack'))
-  .pipe(webpack(config.webpack))
-  // .pipe(prettify({
-  //   indentSize:2,
-  //   indentWithTabs : false,
-  //   // braceStyle: "collapse",
-  //   // jslintHappy : true
-  // }))
-  .pipe(gulp.dest(config.dir.dest + 'assets/js/'))
-  .pipe(browserSync.reload({stream: true}));
+// gulp.task('webpack' ,function(){
+//   gulp.src([config.dir.src + '_webpack/**/*.js'])
+//   .pipe(plumber())
+//   // .pipe(cache('webpack'))
+//   .pipe(webpack(config.webpack))
+//   // .pipe(prettify({
+//   //   indentSize:2,
+//   //   indentWithTabs : false,
+//   //   // braceStyle: "collapse",
+//   //   // jslintHappy : true
+//   // }))
+//   .pipe(gulp.dest(config.dir.dest + 'assets/js/'))
+//   .pipe(browserSync.reload({stream: true}));
+// });
+//
+function onBuild() {
+  return function(err, stats) {
+    if(err) {
+      console.log('Error', err);
+    } else {
+      console.log(stats.toString());
+    }
+    browserSync.reload();
+  }
+}
+
+gulp.task('webpack', function() {
+  // webpack(webpackconfig).watch(100, onBuild())
+  webpack(config.webpack).watch(100, onBuild())
 });
+
 
 gulp.task('iconfont', function() {
   gulp.src(config.fonts.src)
@@ -197,7 +215,7 @@ gulp.task('iconfont', function() {
   .pipe( gulp.dest( config.fonts.dest) );
 });
 //- ----------------------------------------------------------- watch <
-gulp.task('watch', ['copyStaticFiles'], function () {
+gulp.task('watch', ['copyStaticFiles', 'webpack'], function () {
     browserSync({
       server: {
         baseDir: config.dir.dest,
@@ -211,6 +229,6 @@ gulp.task('watch', ['copyStaticFiles'], function () {
     });
     gulp.watch(config.dir.src + '**/*.jade', ['jade']);
     gulp.watch(config.dir.src + '**/*.styl', ['stylus']);
-    gulp.watch(config.dir.src + '**/*.ts', ['webpack']);
+    // gulp.watch(config.dir.src + '**/*.ts', ['webpack']);
     gulp.watch(config.dir.src + 'assets/fonts/_src/*.svg', ['iconfont']);
 });

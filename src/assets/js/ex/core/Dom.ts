@@ -1,23 +1,20 @@
 class _d {
-  public static el = (_selector:string):any => {
-    if (_selector.indexOf('#') >= 0) {
-      return document.querySelector(_selector);
-    } else {
-      return document.querySelectorAll(_selector);
-    }
-  }
-
 //- -----------------------------------------------------------  <
 // $('#myParent').children();
 // // IE 9+ (ignores comment & text nodes).
 // document.getElementById('myParent').children;
 //- -----------------------------------------------------------  <
-  
+  public static el = (_selector:string):any => {
+    if (_selector.indexOf('#') >= 0) {
+      return <HTMLElement>document.querySelector(_selector);
+    } else {
+      return document.querySelectorAll(_selector);
+    }
+  }
   
   //- . . . . . . . . . . . . . . .  . . . Positions / Size <
   public static offset = (_elem:any):any => {
-    var rect = _elem.getBoundingClientRect()
-    
+    var rect = _elem.getBoundingClientRect();
     return {top: rect.top + document.body.scrollTop, left: rect.left + document.body.scrollLeft};
   }
   
@@ -39,7 +36,12 @@ class _d {
   }
   
   public static removeClass = (_elem:any, _class:string):void => {
+    if (!_d.hasClass(_elem, _class))  return;
     _elem.classList.remove(_class);
+  }
+  
+  public static toggleClass = (_elem:any, _class:string):void => {
+    _elem.classList.toggle(_class);
   }
   
   public static hasClass = (_elem, _className:string):any => {
@@ -47,13 +49,6 @@ class _d {
       return _elem.classList.contains(_className);
     else
       return new RegExp('(^| )' + _className + '( |$)', 'gi').test(_elem._className);
-  }
-  
-  public static toggle = (_elem:any):void => {
-    if (_elem.className.indexOf('active') >= 0)
-      _d.removeClass(_elem, 'active');
-    else
-      _d.addClass(_elem, 'active');
   }
   
   //- . . . . . . . . . . . . . . .  . . . Attributes <
