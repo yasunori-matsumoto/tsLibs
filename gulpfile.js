@@ -16,22 +16,15 @@ var rename         = require('gulp-rename');
 var replace        = require('gulp-replace');
 var browserSync    = require('browser-sync');
 var connectSSI     = require('connect-ssi');
-var cache          = require('gulp-cached');
-
+var cache      = require('gulp-cached');
 //- . . . . . . . . . . . . . . . . . . js <
 
-// var strip    = require('gulp-strip-comments');
-// var webpack    = require('webpack-stream');
-// var typescript = require('gulp-typescript');
-// var uglify     = require('gulp-uglify');
-// var prettify = require('gulp-jsbeautifier');
 var webpack = require('webpack');
 
 //- . . . . . . . . . . . . . . . . . . css <
 var stylus         = require('gulp-stylus');
 var nib            = require('nib');
 var pleeease       = require('gulp-pleeease');
-var cssmin         = require('gulp-minify-css');
 
 //- . . . . . . . . . . . . . . . . . . html <
 var jade           = require('gulp-jade');
@@ -54,7 +47,7 @@ gulp.task('bower', function() {
 
 //- ----------------------------------------------------------- copy static files <
 gulp.task('copyStaticFiles', function() {
-  gulp.src([config.dir.src + '**/*.+(css|js|def|xml|mp4|json|zip|inc)', '!' + config.dir.src + '**/tsconfig*', '!' + config.dir.src + '**/_*/*'])
+  gulp.src([config.dir.src + '**/*.+(css|js|def|xml|mp4|json|zip|inc|woff|svg)', '!' + config.dir.src + '**/tsconfig*', '!' + config.dir.src + '**/_*/*'])
     .pipe(changed( config.dir.dest ))
     .pipe(gulp.dest(config.dir.dest));
 });
@@ -63,7 +56,7 @@ gulp.task('copyStaticFiles', function() {
 gulp.task('stylus', function(){
   gulp.src(config.stylus.src)
   .pipe(plumber())
-  .pipe(cache('stylus'))
+  // .pipe(cache('stylus'))
   .pipe(changed( config.dir.dest ))
   //- ----------------------------------------------------------- styls <
   .pipe(gulpif(/[.]styl$/, stylus(config.stylus.options)))
@@ -73,29 +66,40 @@ gulp.task('stylus', function(){
       autoprefixer : {
         browsers : config.stylus.prefixer
       },
-      minifier: config.IS_MIN
+      minifier: config.IS_MIN,
+      autoprefixer: true
     })
   )
   .pipe(gulpif(!config.IS_MIN, replace(/\n\n/g, '\n')))
   .pipe(gulpif(config.IS_HARDCASE, replace(/    /g, '\t')))
-  .pipe(gulpif(config.IS_MIN, cssmin({compatibility: 'ie8', keepBreaks:true, rebase:false})))
   .pipe(gulp.dest(config.dir.dest))
   .pipe(browserSync.reload({stream: true}));
 });
 
 
-//- ----------------------------------------------------------- jade <
+//- ----------------------------------------------------------- i <
 gulp.task('jade', function () {
   gulp.src(config.jade.src)
-    .pipe(changed( config.dir.dest ))
     .pipe(plumber())
-    .pipe(cache('jade'))
+    // .pipe(cache('jade'))
     .pipe(jade({
       pretty: true
     }))
     .pipe(gulpif(config.IS_HARDCASE, replace(/  /g, '\t')))
     .pipe(gulp.dest(config.dir.dest))
     .pipe(browserSync.reload({stream: true}));
+});
+
+gulp.task('make_include', function () {
+  gulp.src([config.dir.src + '**/_include/*.jade'])
+    .pipe(changed( config.dir.dest ))
+    .pipe(plumber())
+    .pipe(jade({
+      pretty: true
+    }))
+    .pipe(gulpif(config.IS_HARDCASE, replace(/  /g, '\t')))
+    .pipe(rename({extname:'.inc', dirname:'assets/include/'}))
+    .pipe(gulp.dest(config.dir.dest));
 });
 
 //- ----------------------------------------------------------- image optimize <
@@ -117,7 +121,8 @@ gulp.task('optimizeImage', function(){
 //- ----------------------------------------------------------- css sprite <
 
 var SPRITE_MODE = {
-  ASSETS  : 0
+  ASSETS  : 0,
+  INDEX  : 1
 };
 
 gulp.task('makeSprite',  function () {
@@ -126,13 +131,18 @@ gulp.task('makeSprite',  function () {
   _imgOutput  = config.dir.src + 'assets/img/sprites/';
 
   //- . . . . . . . . . . . . . . .  . . . config Mode <
-  _mode = SPRITE_MODE.ASSETS;
+  // _mode = SPRITE_MODE.ASSETS;
+  _mode = SPRITE_MODE.INDEX;
   
   //- . . . . . . . . . . . . . . .  . . . config Mode <
   switch (_mode) {
     case SPRITE_MODE.ASSETS :
-      _prefix     = 'assets';
-      _source     = config.dir.src + 'assets/img/_src/';
+      _prefix     = config.IS_PC ? 'assets' : 'sp_assets';
+      _source     = config.IS_PC ? config.dir.src + 'assets/img/_src/' : config.dir.src + 'assets/img/_srcsp/';
+    break;
+    case SPRITE_MODE.INDEX :
+      _prefix     = config.IS_PC ? 'idx' : 'sp_idx';
+      _source     = config.IS_PC ? config.dir.src + 'img/_src/' : config.dir.src + 'img/_srcsp/';
     break;
   }
   
@@ -160,37 +170,16 @@ gulp.task('makeSprite',  function () {
   spriteData.css.pipe(gulp.dest(_scssOutput));
 });
 
-// gulp.task('webpack' ,function(){
-//   gulp.src([config.dir.src + '_webpack/**/*.js'])
-//   .pipe(plumber())
-//   // .pipe(cache('webpack'))
-//   .pipe(webpack(config.webpack))
-//   // .pipe(prettify({
-//   //   indentSize:2,
-//   //   indentWithTabs : false,
-//   //   // braceStyle: "collapse",
-//   //   // jslintHappy : true
-//   // }))
-//   .pipe(gulp.dest(config.dir.dest + 'assets/js/'))
-//   .pipe(browserSync.reload({stream: true}));
-// });
-//
 function onBuild() {
   return function(err, stats) {
-    if(err) {
-      console.log('Error', err);
-    } else {
-      console.log(stats.toString());
-    }
+    err ? console.log('Error', err) : console.log(stats.toString());
     browserSync.reload();
   }
 }
 
 gulp.task('webpack', function() {
-  // webpack(webpackconfig).watch(100, onBuild())
   webpack(config.webpack).watch(100, onBuild())
 });
-
 
 gulp.task('iconfont', function() {
   gulp.src(config.fonts.src)
@@ -216,19 +205,25 @@ gulp.task('iconfont', function() {
 });
 //- ----------------------------------------------------------- watch <
 gulp.task('watch', ['copyStaticFiles', 'webpack'], function () {
+    cache.caches = {};
     browserSync({
       server: {
-        baseDir: config.dir.dest,
+        baseDir: '_git/public_html/',
         middleware : [
           connectSSI({
-            baseDir: config.dir.dest,
+            baseDir: '_git/public_html/',
             ext:'.html'
           })
         ]
+      },
+      ghostMode: {
+        clicks: false,
+        forms: false,
+        scroll: true
       }
+      // reloadDelay: 5000
     });
     gulp.watch(config.dir.src + '**/*.jade', ['jade']);
     gulp.watch(config.dir.src + '**/*.styl', ['stylus']);
-    // gulp.watch(config.dir.src + '**/*.ts', ['webpack']);
-    gulp.watch(config.dir.src + 'assets/fonts/_src/*.svg', ['iconfont']);
+    // gulp.watch(config.dir.src + 'assets/fonts/_src/*.svg', ['iconfont']);
 });

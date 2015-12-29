@@ -36,6 +36,7 @@ class Main {
   }
   
   threeInit = ():void => {
+    console.log('tree');
     this._scene = new THREE.Scene();
     
     //- . . . . . . . . . . . . . . .  . . . init <

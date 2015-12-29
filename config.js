@@ -1,20 +1,19 @@
-var nib            = require('nib');
-
-var projectName = 'reserch';
+var projectName = 'kd';
 var IS_MIN      = false;
 var IS_HARDCASE = false;
 var IS_PC       = true;
 
-var src = IS_PC ? './src/' : './src/sp/';
-var dest = IS_PC ? './_git/public_html/' : './_git/public_html/sp/';
+var src = IS_PC ? './src/' : './src/';
+var dest = IS_PC ? './_git/public_html/' : './_git/public_html/';
 
-
+var nib            = require('nib');
 var path = require("path");
 var current = process.cwd();
 var webpack = require('webpack');
-var BowerWebpackPlugin = require("bower-webpack-plugin");
+var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 
 module.exports = {
+  IS_PC : IS_PC,
   dir : {
     src : src,
     dest : dest
@@ -47,21 +46,25 @@ module.exports = {
   },
   webpack: {
     entry: {
-      index : src + 'assets/js/Main.ts'
+      index : src + 'assets/js/kokudai/index.ts',
+      assets : src + 'assets/js/kokudai/assets.ts',
+      search : src + 'assets/js/kokudai/search.ts',
+      movie : src + 'assets/js/kokudai/movie.ts'
     },
     output: {
       path : dest + 'assets/js/',
-      filename: projectName + '.[name].js',
+      filename: '[name].js',
       sourcePrefix : '',
       devtoolLineToLine : 'disabled',
       pathinfo : false,
+      sourceMapFilename : 'sourcemap.js',
+      jsonpFunction : projectName
     },
     externals : {
     },
     resolve: {
       root: [path.resolve(__dirname, 'src/assets/js')],
-      extensions: ['', '.js', '.ts'],
-      moduleDirectories : ['bower_components']
+      extensions: ['', '.js', '.ts']
     },
     module : {
       loaders: [
@@ -73,15 +76,16 @@ module.exports = {
         Event : 'ex/events/Event',
         EventDispatcher : 'ex/events/EventDispatcher',
         MouseEvent : 'ex/events/MouseEvent',
-        Ease : 'ex/easing/Ease',
-        _d : 'ex/core/Dom'
+        Ease : 'ex/easing/Ease'
       }),
-      // new webpack.BannerPlugin('test', {entry:true}),
+      new CommonsChunkPlugin("assets", "assets.js"),
+      new webpack.optimize.DedupePlugin(),
+      // new webpack.optimize.AggressiveMergingPlugin(),
       new webpack.optimize.UglifyJsPlugin({
         compress: {
             warnings: false
         },
-        sourceMap:false,
+        sourceMap:true,
         beautify : true,
         mangle : false
       })
@@ -91,7 +95,7 @@ module.exports = {
     src: [src + 'assets/fonts/_src/*.svg'],
     template : '_icons.styl',
     dest: dest + 'assets/fonts/',
-    fontName : 'font',
+    fontName : 'kf',
     template_dest : src + 'assets/css/fonts/'
   }
 }

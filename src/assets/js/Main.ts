@@ -2,9 +2,7 @@
 // import Event = require('ex/events/Event');
 import MouseEvent = require('ex/events/MouseEvent');
 import Loader = require('ex/network/Loader');
-import DisplayObject = require('ex/display/DisplayObject');
 import DevelopMain = require('caters/develop/Main');
-import PixiDevelop = require('caters/develop/Pixi');
 
 // import Jade = require("jade!./jade/test.jade");
 
@@ -47,25 +45,9 @@ function ready(fn) {
 }
 
 ready(function() {
+  console.log('main');
   FastClick.attach(document.body);
-  new Sample();
-  // new DevelopMain();
-  new PixiDevelop();
+  // new Sample();
+  new DevelopMain();
+  // new PixiDevelop();
 });
-
-class Sample extends EventDispatcher {
-  constructor() {
-    super();
-    var _aaa = new DisplayObject(document.querySelector('#test'));
-    
-    _aaa.addEventListener(MouseEvent.CLICK, this.onClickHD);
-    console.log(_aaa);
-    // var _el = _d.el('#test');
-    // _el.addEventListener(MouseEvent.CLICK, this.onClickHD);
-    // console.log(_el);
-  }
-  
-  onClickHD = ():void => {
-    alert('test');
-  }
-}
